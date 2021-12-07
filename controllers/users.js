@@ -11,13 +11,12 @@ const createUser = async(req,res) =>{
       return res.status(400).json({ errors: errors.array() });
     }
     
-  const { email, password, name, points, premium, admin, loggedIn, favs} = req.body
+  const { email, password, name, premium, admin, loggedIn, favs} = req.body
 
   const newUser = new User({
     email,
     password,
     name,
-    points,
     premium,
     admin,
     loggedIn,
@@ -28,7 +27,7 @@ const createUser = async(req,res) =>{
   newUser.password = bcrypt.hashSync(password, salt);
 
   await newUser.save()
-  res.json(`User ${newUser.email} created`) 
+  res.status(200).json(`User ${newUser.email} created`) 
 }
 
 

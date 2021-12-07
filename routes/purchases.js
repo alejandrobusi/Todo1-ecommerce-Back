@@ -1,8 +1,8 @@
 const { Router } = require('express')
 const { body } = require('express-validator');
 const { jwtvalidator } = require('../middleware/jwtvalidator')
-const { createPurchase, editPurchases, getPurchases } = require('../controllers/purchases');
-const { validationIsbn, validationMinMaxIsbn } = require('../helpers/validations');
+const { createPurchase, getPurchases } = require('../controllers/purchases');
+
 const route = Router()
 
 route.post('/purchases', createPurchase)

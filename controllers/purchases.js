@@ -1,3 +1,4 @@
+const Product = require('../models/products')
 const Purchase = require('../models/purchases')
 const { validationResult } = require('express-validator');
 
@@ -9,26 +10,36 @@ const createPurchase = async( req,res ) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-  const {nombre, apellido, email, calle, altura, piso, unidad, telefono, items} = req.body
+    const {name, lastName, email, street, height, apartment, telephone, items} = req.body
 
-  const newPurchase = new Purchase({
-    nombre,
-    apellido,
-    email,
-    calle,
-    altura,
-    piso,
-    unidad,
-    telefono,
-    items,
-  })
-  
-  await newPurchase.save()
-  res.json(`Compraste: "${newPurchase.nombre}" !DISFRUTALO¡`) 
-  
+    const newPurchase = new Purchase({
+      name,
+      lastName,
+      email,
+      street,
+      height,
+      apartment,
+      telephone,
+      items,
+    })
+    
+    await newPurchase.save()
+    
+    await updateStock(items)
+    
+    res.status(200).json(`ok`) 
+    
   } catch (error) {
     res.json(`something has failed. error : ${error}`) 
   }
+}
+
+const updateStock = async(items) => {
+  items.forEach(async (item) => {
+    const product = await Product.findOne({ _id: item._id });
+    product.stock = item.stock;
+    await product.save();
+})
 }
 
 const getPurchases = async(req,res) =>{
@@ -39,17 +50,4 @@ const getPurchases = async(req,res) =>{
 }
 
 
-const editPurchases = async ( req, res ) => {
-  
-  const errors = validationResult(req);
-  
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-  const productEdit = await Product.findByIdAndUpdate(req.params.prodId , req.body, {new: true})
-  
-  res.status(200).json(productEdit) 
-  }
-
-
-module.exports = { createPurchase, editPurchases, getPurchases }
+module.exports = { createPurchase, getPurchases }

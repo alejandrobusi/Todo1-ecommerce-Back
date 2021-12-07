@@ -2,13 +2,12 @@ const { Schema, model } = require('mongoose')
 
 const purchase = new Schema({
   name: String,
-  apellido: String,
+  lastName: String,
   email: String,
-  calle: String,
-  altura: String,
-  piso: String,
-  unidad: String,
-  telefono: String,
+  street: String,
+  height: String,
+  apartment: String,
+  telephone: String,
   items: Array,
 
 })

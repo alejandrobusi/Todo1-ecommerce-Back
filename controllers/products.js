@@ -2,7 +2,7 @@ const Product = require('../models/products')
 const { validationResult } = require('express-validator');
 
 const createProduct = async( req,res ) => {
-  
+  console.log("entra")
   try {
     const errors = validationResult(req);
     
@@ -19,14 +19,14 @@ const createProduct = async( req,res ) => {
     price,
     stock,
     imgUrl,
-    quantity
+    quantity : 0
   })
   
   await newProduct.save()
-  res.json(`product "${newProduct.name}" with ID ${newProduct._id} created`) 
+  res.status(200).jsonjson(`product "${newProduct.name}" with ID ${newProduct._id} created`) 
   
   } catch (error) {
-    res.json(`something has failed. error : ${error}`) 
+    res.status(400).json(`something has failed. error : ${error}`) 
   }
 }
 
@@ -35,6 +35,13 @@ const getProducts = async(req,res) =>{
   const products = await Product.find({})
   
   res.json(products)
+}
+
+const getProductsById = async(req,res) =>{
+
+  const product = await Product.findById(req.params.prodId)
+  
+  res.json(product)
 }
 
 const deleteProduct = async ( req, res ) => {
@@ -46,7 +53,7 @@ const deleteProduct = async ( req, res ) => {
     return res.status(400).json({ errors: errors.array() });
   }
   await Product.deleteOne({ _id: id });
-  res.json(`it was successfully eliminated ${id}` , res.status)
+  res.status(200).json(`it was successfully eliminated ${id}` , res.status)
 }
 
 const editProduct = async ( req, res ) => {
@@ -62,4 +69,4 @@ const editProduct = async ( req, res ) => {
   }
 
 
-module.exports = { createProduct, deleteProduct, editProduct, getProducts }
+module.exports = { createProduct, deleteProduct, editProduct, getProducts, getProductsById }
