@@ -30,7 +30,7 @@ const loginUser = async(req,res) =>{
         email: searchEmail[0].email,
         admin : searchEmail[0].admin
       }
-  
+      
       res.status(200).json({'msg':'Usuario logueado correctamente', frontUser, token: token})
       return
     } else {
