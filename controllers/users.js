@@ -8,7 +8,7 @@ const createUser = async(req,res) =>{
   const errors = validationResult(req);
   
   if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.json({ errors: errors.array(), status: 400 });
     }
     
   const { email, password, name, premium, admin, loggedIn, favs} = req.body
@@ -27,7 +27,7 @@ const createUser = async(req,res) =>{
   newUser.password = bcrypt.hashSync(password, salt);
 
   await newUser.save()
-  res.status(200).json(`User ${newUser.email} created`) 
+  return res.json({user: newUser.email, status: 200}) 
 }
 
 
