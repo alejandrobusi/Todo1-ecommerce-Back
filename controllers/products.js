@@ -55,7 +55,7 @@ const deleteProduct = async ( req, res ) => {
 }
 
 const editProduct = async ( req, res ) => {
-  console.log(req)
+  
   const errors = validationResult(req);
   
   if (!errors.isEmpty()) {
